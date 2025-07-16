@@ -2,6 +2,7 @@ const express = require('express');
 const { OpenAI } = require('openai');
 const cors = require('cors');
 require('dotenv').config({ path: '../.env' });
+const axios = require('axios');
 
 const app = express();
 app.use(express.json());
@@ -20,6 +21,28 @@ app.post('/api/ai-feedback', async (req, res) => {
       temperature: 0.7,
     });
     res.json({ feedback: completion.choices[0].message.content });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Polygon.io'dan OHLCV verisi çeken izole endpoint
+app.post('/api/polygon-ohlcv', async (req, res) => {
+  const { ticker, startDate, endDate } = req.body;
+  const apiKey = process.env.POLYGON_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Polygon API anahtarı eksik.' });
+  }
+  try {
+    const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${startDate}/${endDate}`;
+    const params = {
+      adjusted: 'true',
+      sort: 'asc',
+      limit: 5000,
+      apiKey,
+    };
+    const response = await axios.get(url, { params });
+    res.json(response.data);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
