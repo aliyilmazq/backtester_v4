@@ -6,9 +6,9 @@ import { useAuth } from './hooks/useAuth';
 import { useWebSocket } from './hooks/useWebSocket';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import LoginForm from './components/auth/LoginForm';
-import MainLayout from './components/layout/MainLayout';
-import Dashboard from './components/dashboard/Dashboard';
+import ModernLoginForm from './components/auth/ModernLoginForm';
+import ModernLayout from './components/layout/ModernLayout';
+import ModernDashboard from './components/dashboard/ModernDashboard';
 import Strategies from './components/strategies/Strategies';
 import Backtest from './components/backtest/Backtest';
 import Academy from './components/academy/Academy';
@@ -25,19 +25,19 @@ const AppContent: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<ModernLoginForm />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <MainLayout />
+              <ModernLayout />
             </ProtectedRoute>
           }
         >
           <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={<ModernDashboard />} />
           <Route
             path="strategies"
             element={
