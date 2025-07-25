@@ -1,0 +1,160 @@
+name: Deploy
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+env:
+  DEPLOY_TAG: ${{ github.event.release.tag_name || github.sha }}
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.environment || 'production' }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEPLOY_TAG }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test -- --passWithNoTests
+      
+      - name: Build application
+        run: npm run build
+        env:
+          CI: true
+          REACT_APP_ENV: ${{ github.event.inputs.environment || 'production' }}
+      
+      - name: Create deployment record
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: '${{ env.DEPLOY_TAG }}',
+              task: 'deploy',
+              auto_merge: false,
+              required_contexts: [],
+              environment: '${{ github.event.inputs.environment || 'production' }}',
+              description: 'Deploying version ${{ env.DEPLOY_TAG }}'
+            });
+            
+            core.setOutput('deployment_id', deployment.data.id);
+            return deployment.data.id;
+      
+      - name: Deploy to hosting
+        id: deploy_step
+        run: |
+          # Add your deployment script here
+          # For example: deploy to Vercel, Netlify, AWS, etc.
+          echo "Deploying to ${{ github.event.inputs.environment || 'production' }}"
+          echo "Deploy version: ${{ env.DEPLOY_TAG }}"
+          
+          # Simulate deployment
+          echo "deployment_url=https://your-app.com" >> $GITHUB_OUTPUT
+      
+      - name: Update deployment status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ steps.deployment.outputs.deployment_id }},
+              state: '${{ job.status }}',
+              target_url: '${{ steps.deploy_step.outputs.deployment_url }}',
+              environment_url: '${{ steps.deploy_step.outputs.deployment_url }}',
+              description: 'Deployment ${{ job.status }}'
+            });
+
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    if: failure()
+    needs: deploy
+    steps:
+      - name: Get previous release
+        id: prev_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const releases = await github.rest.repos.listReleases({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 2
+            });
+            
+            if (releases.data.length > 1) {
+              const previousRelease = releases.data[1];
+              core.setOutput('tag', previousRelease.tag_name);
+              core.setOutput('name', previousRelease.name);
+              return previousRelease;
+            } else {
+              core.setFailed('No previous release found for rollback');
+            }
+      
+      - name: Trigger rollback deployment
+        if: steps.prev_release.outputs.tag
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy.yml',
+              ref: 'main',
+              inputs: {
+                environment: '${{ github.event.inputs.environment || 'production' }}',
+                version: '${{ steps.prev_release.outputs.tag }}'
+              }
+            });
+            
+            core.info(`Triggered rollback to version: ${{ steps.prev_release.outputs.tag }}`);
+      
+      - name: Create rollback issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Deployment Failed - Rollback Initiated`,
+              body: `## Deployment Failure
+              
+              **Failed Version:** ${{ env.DEPLOY_TAG }}
+              **Environment:** ${{ github.event.inputs.environment || 'production' }}
+              **Rollback to:** ${{ steps.prev_release.outputs.tag || 'N/A' }}
+              
+              ### Action Items
+              - [ ] Review deployment logs
+              - [ ] Identify root cause
+              - [ ] Fix the issue
+              - [ ] Create hotfix if needed
+              
+              **Workflow Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}`,
+              labels: ['bug', 'deployment', 'high-priority']
+            });

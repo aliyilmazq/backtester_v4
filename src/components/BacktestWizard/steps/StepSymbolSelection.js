@@ -1,57 +1,58 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Search, X, TrendingUp, AlertCircle } from 'lucide-react';
 import { debounce } from 'lodash';
+import { Search, X, TrendingUp, AlertCircle } from 'lucide-react';
+import PropTypes from 'prop-types';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+
 import { searchSymbols } from '../../../services/symbolService';
 
-const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
+const StepSymbolSelection = ({ config, updateConfig, onNext }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [selectedSymbol, setSelectedSymbol] = useState(data.symbol || null);
+  const [selectedSymbol, setSelectedSymbol] = useState(config?.symbol || null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
   // Debounced search function
-  const debouncedSearch = useCallback(
-    debounce(async (query) => {
-      if (query.length < 2) {
-        setSearchResults([]);
-        return;
-      }
+  const debouncedSearch = useCallback(async (query) => {
+    if (query.length < 2) {
+      setSearchResults([]);
+      return;
+    }
 
-      setIsSearching(true);
-      setError(null);
+    setIsSearching(true);
+    setError(null);
 
-      try {
-        const results = await searchSymbols(query);
-        setSearchResults(results);
-        setShowDropdown(true);
-      } catch (err) {
-        setError('Failed to search symbols. Please try again.');
-        setSearchResults([]);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 300),
-    []
-  );
+    try {
+      const results = await searchSymbols(query);
+      setSearchResults(results);
+      setShowDropdown(true);
+    } catch (err) {
+      setError('Failed to search symbols. Please try again.');
+      setSearchResults([]);
+    } finally {
+      setIsSearching(false);
+    }
+  }, []);
+
+  const debouncedSearchHandler = useMemo(() => debounce(debouncedSearch, 300), [debouncedSearch]);
 
   useEffect(() => {
-    debouncedSearch(searchQuery);
-  }, [searchQuery, debouncedSearch]);
+    debouncedSearchHandler(searchQuery);
+  }, [searchQuery, debouncedSearchHandler]);
 
   const handleSelectSymbol = (symbol) => {
     setSelectedSymbol(symbol);
     setSearchQuery(symbol.displaySymbol);
     setShowDropdown(false);
-    onUpdate({ symbol });
+    updateConfig({ symbol });
   };
 
   const handleClearSelection = () => {
     setSelectedSymbol(null);
     setSearchQuery('');
     setSearchResults([]);
-    onUpdate({ symbol: null });
+    updateConfig({ symbol: null });
   };
 
   const handleNext = () => {
@@ -63,9 +64,7 @@ const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">
-          Select a Symbol
-        </h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Select a Symbol</h3>
         <p className="text-sm text-gray-600">
           Search and select a stock symbol to backtest your strategy
         </p>
@@ -94,7 +93,7 @@ const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
           )}
           {isSearching && (
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500" />
             </div>
           )}
         </div>
@@ -102,20 +101,16 @@ const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
         {/* Search Results Dropdown */}
         {showDropdown && searchResults.length > 0 && (
           <div className="absolute z-10 mt-1 w-full bg-white shadow-lg rounded-lg border border-gray-200 max-h-96 overflow-auto">
-            {searchResults.map((result, index) => (
+            {searchResults.map((result) => (
               <button
-                key={index}
+                key={`${result.displaySymbol}-${result.exchange}`}
                 onClick={() => handleSelectSymbol(result)}
                 className="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-semibold text-gray-900">
-                      {result.displaySymbol}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      {result.description}
-                    </div>
+                    <div className="font-semibold text-gray-900">{result.displaySymbol}</div>
+                    <div className="text-sm text-gray-600">{result.description}</div>
                   </div>
                   <div className="text-xs text-gray-500">
                     {result.type} • {result.currency}
@@ -140,7 +135,7 @@ const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
         {showDropdown && searchQuery.length >= 2 && searchResults.length === 0 && !isSearching && (
           <div className="absolute z-10 mt-1 w-full bg-gray-50 border border-gray-200 rounded-lg p-4">
             <p className="text-sm text-gray-600 text-center">
-              No symbols found matching "{searchQuery}"
+              No symbols found matching &quot;{searchQuery}&quot;
             </p>
           </div>
         )}
@@ -152,12 +147,8 @@ const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
           <div className="flex items-center">
             <TrendingUp className="h-5 w-5 text-blue-600 mr-3" />
             <div>
-              <div className="font-semibold text-gray-900">
-                {selectedSymbol.displaySymbol}
-              </div>
-              <div className="text-sm text-gray-600">
-                {selectedSymbol.description}
-              </div>
+              <div className="font-semibold text-gray-900">{selectedSymbol.displaySymbol}</div>
+              <div className="text-sm text-gray-600">{selectedSymbol.description}</div>
               <div className="text-xs text-gray-500 mt-1">
                 {selectedSymbol.type} • {selectedSymbol.currency} • {selectedSymbol.exchange}
               </div>
@@ -182,6 +173,18 @@ const StepSymbolSelection = ({ data, onUpdate, onNext }) => {
       </div>
     </div>
   );
+};
+
+StepSymbolSelection.propTypes = {
+  config: PropTypes.shape({
+    symbol: PropTypes.object,
+  }),
+  updateConfig: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
+};
+
+StepSymbolSelection.defaultProps = {
+  config: { symbol: null },
 };
 
 export default StepSymbolSelection;
