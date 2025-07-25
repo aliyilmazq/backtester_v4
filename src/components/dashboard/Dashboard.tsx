@@ -25,7 +25,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchPortfolioStats());
-    dispatch(fetchRecentTrades(10));
+    dispatch(fetchRecentTrades());
     dispatch(fetchStrategies());
     dispatch(fetchPerformanceData(selectedPeriod));
   }, [dispatch, selectedPeriod]);

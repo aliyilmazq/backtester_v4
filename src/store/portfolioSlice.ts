@@ -29,8 +29,8 @@ export const fetchPortfolioStats = createAsyncThunk(
 
 export const fetchRecentTrades = createAsyncThunk(
   'portfolio/fetchTrades',
-  async (limit = 10) => {
-    const response = await portfolioService.getRecentTrades(limit);
+  async (limit?: number) => {
+    const response = await portfolioService.getRecentTrades(limit || 10);
     return response;
   }
 );
