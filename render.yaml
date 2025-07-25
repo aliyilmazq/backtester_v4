@@ -1,0 +1,47 @@
+services:
+  # Web Service - Backend API
+  - type: web
+    name: backtester-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: node server/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: POLYGON_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://backtester-frontend.onrender.com
+    healthCheckPath: /api/health
+    plan: free
+
+  # Static Site - React Frontend
+  - type: web
+    name: backtester-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://backtester-api.onrender.com
+      - key: REACT_APP_POLYGON_API_KEY
+        sync: false
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    plan: free
