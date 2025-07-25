@@ -1,10 +1,58 @@
-export interface OHLCV {
-  timestamp: number;
-  open: number;
-  high: number;
-  low: number;
-  close: number;
-  volume: number;
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: 'admin' | 'portfolio_manager' | 'trader' | 'viewer';
+  permissions: string[];
+}
+
+export interface Strategy {
+  id: number;
+  name: string;
+  status: 'active' | 'paused' | 'stopped';
+  aum: number;
+  performance: number;
+  sharpe: number;
+  maxDrawdown: number;
+  risk: 'Conservative' | 'Moderate' | 'Aggressive';
+  lastRebalance: string;
+  positions: number;
+  userId: string;
+}
+
+export interface Trade {
+  id: string;
+  strategyId: number;
+  strategy: string;
+  action: 'BUY' | 'SELL';
+  asset: string;
+  quantity: number;
+  price: number;
+  total: number;
+  time: string;
+  status: 'pending' | 'executed' | 'failed';
+}
+
+export interface PortfolioStats {
+  totalAUM: number;
+  dayChange: number;
+  dayChangePercent: number;
+  activeStrategies: number;
+  ytdReturn: number;
+  monthlyReturn: number;
+  winRate: number;
+  sharpeRatio: number;
+}
+
+export interface BacktestConfig {
+  strategyId: number;
+  startDate: string;
+  endDate: string;
+  initialCapital: number;
+  commission: number;
+  dataSource: string;
+  assets: string[];
+  frequency: 'daily' | 'hourly' | '5min';
 }
 
 export interface BacktestResult {
@@ -12,69 +60,30 @@ export interface BacktestResult {
   sharpeRatio: number;
   maxDrawdown: number;
   winRate: number;
-  trades: Trade[];
-  equity: number[];
-  dates: string[];
+  trades: number;
+  profitableTrades: number;
+  averageReturn: number;
+  volatility: number;
 }
 
-export interface Trade {
-  entryDate: string;
-  exitDate: string;
-  entryPrice: number;
-  exitPrice: number;
-  quantity: number;
-  type: 'long' | 'short';
-  profit: number;
-  profitPercent: number;
-}
-
-export interface Strategy {
-  id: string;
-  name: string;
-  description: string;
-  parameters: StrategyParameter[];
-}
-
-export interface StrategyParameter {
-  name: string;
-  type: 'number' | 'string' | 'boolean';
-  defaultValue: any;
-  min?: number;
-  max?: number;
-  step?: number;
-}
-
-export interface Symbol {
+export interface MarketData {
   symbol: string;
-  name: string;
-  exchange: string;
-  type: string;
+  price: number;
+  change: number;
+  changePercent: number;
+  volume: number;
+  timestamp: number;
 }
 
-export interface TimeRange {
-  start: Date;
-  end: Date;
+export interface WebSocketMessage {
+  type: 'price_update' | 'trade_execution' | 'strategy_update' | 'alert';
+  data: any;
 }
 
-export interface BacktestConfig {
-  symbol: Symbol;
-  timeRange: TimeRange;
-  strategy: Strategy;
-  parameters: Record<string, any>;
-  initialCapital: number;
-  commission: number;
-}
-
-export interface ChartData {
-  labels: string[];
-  datasets: ChartDataset[];
-}
-
-export interface ChartDataset {
-  label: string;
-  data: number[];
-  borderColor?: string;
-  backgroundColor?: string;
-  fill?: boolean;
-  yAxisID?: string;
+export interface AuthState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
 }
