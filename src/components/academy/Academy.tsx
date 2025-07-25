@@ -141,7 +141,7 @@ const Academy: React.FC = () => {
                   <div 
                     className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
                     style={{width: `${course.progress}%`}}
-                  ></div>
+                  />
                 </div>
               </div>
               <div className="text-right">

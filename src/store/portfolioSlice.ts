@@ -1,4 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 import { PortfolioStats, Trade } from '../types';
 import portfolioService from '../services/portfolioService';
 
@@ -28,7 +29,7 @@ export const fetchPortfolioStats = createAsyncThunk(
 
 export const fetchRecentTrades = createAsyncThunk(
   'portfolio/fetchTrades',
-  async (limit: number = 10) => {
+  async (limit = 10) => {
     const response = await portfolioService.getRecentTrades(limit);
     return response;
   }

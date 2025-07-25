@@ -222,7 +222,7 @@ const ModernLayout: React.FC = () => {
               {/* Notifications */}
               <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <Bell size={20} className="text-gray-600" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
 
               {/* User Menu */}

@@ -9,9 +9,8 @@ import {
   Tooltip,
   Legend,
   Filler,
-  ChartOptions,
-  TooltipItem,
 } from 'chart.js';
+import type { ChartOptions, TooltipItem } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(

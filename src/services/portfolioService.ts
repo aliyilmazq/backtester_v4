@@ -6,7 +6,7 @@ class PortfolioService {
     return await api.get<PortfolioStats>('/portfolio/stats');
   }
 
-  async getRecentTrades(limit: number = 10): Promise<Trade[]> {
+  async getRecentTrades(limit = 10): Promise<Trade[]> {
     return await api.get<Trade[]>(`/portfolio/trades?limit=${limit}`);
   }
 
