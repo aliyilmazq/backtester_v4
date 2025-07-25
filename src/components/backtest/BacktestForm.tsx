@@ -27,7 +27,7 @@ const schema = yup.object({
     .min(0, 'Commission cannot be negative')
     .max(5, 'Commission cannot exceed 5%'),
   dataSource: yup.string().required('Data source is required'),
-  assets: yup.array().of(yup.string()).min(1, 'Select at least one asset'),
+  assets: yup.array().of(yup.string().required()).min(1, 'Select at least one asset').required(),
   frequency: yup.string().oneOf(['daily', 'hourly', '5min']).required('Frequency is required'),
 });
 

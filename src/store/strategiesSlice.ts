@@ -67,9 +67,9 @@ const strategiesSlice = createSlice({
       state.error = null;
     },
     updateStrategyLocally: (state, action: PayloadAction<{ id: number; updates: Partial<Strategy> }>) => {
-      const index = state.strategies.findIndex(s => s.id === action.payload.id);
-      if (index !== -1) {
-        state.strategies[index] = { ...state.strategies[index], ...action.payload.updates };
+      const strategy = state.strategies.find(s => s.id === action.payload.id);
+      if (strategy) {
+        Object.assign(strategy, action.payload.updates);
       }
     },
   },

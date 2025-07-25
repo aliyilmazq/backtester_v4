@@ -22,7 +22,7 @@ class WebSocketService {
       return;
     }
 
-    const wsUrl = process.env.REACT_APP_WS_URL || 'http://localhost:3001';
+    const wsUrl = process.env['REACT_APP_WS_URL'] || 'http://localhost:3001';
 
     this.socket = io(wsUrl, {
       auth: { token },

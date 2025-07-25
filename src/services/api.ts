@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 import { store } from '../store';
 import { logout } from '../store/authSlice';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env['REACT_APP_API_URL'] || 'http://localhost:3001/api';
 
 class ApiService {
   private api: AxiosInstance;

@@ -67,7 +67,7 @@ const AllocationChart: React.FC<AllocationChartProps> = ({
         text: title,
         font: {
           size: 16,
-          weight: '600',
+          weight: 'bold' as const,
         },
       },
       tooltip: {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './store';
@@ -18,8 +18,9 @@ import Unauthorized from './components/common/Unauthorized';
 
 // Create a component that uses hooks
 const AppContent: React.FC = () => {
-  const auth = useAuth();
-  const websocket = useWebSocket();
+  // Initialize hooks
+  useAuth();
+  useWebSocket();
 
   return (
     <Router>
