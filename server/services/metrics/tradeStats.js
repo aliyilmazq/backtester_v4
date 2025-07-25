@@ -100,8 +100,8 @@ class TradeStats extends BaseMetric {
         totalTradingDays: priceData.length,
         winningTrades: winningTrades.length,
         losingTrades: losingTrades.length,
-        winRate: winRate,
-        totalReturn: totalReturn,
+        winRate,
+        totalReturn,
         bestTrade: bestTrade ? {
           return: bestTrade.return,
           duration: bestTrade.duration

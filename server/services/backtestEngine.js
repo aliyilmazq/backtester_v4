@@ -1,6 +1,6 @@
 const indicatorService = require('./indicators/indicatorService');
-const strategies = require('./strategies');
 const metrics = require('./metrics');
+const strategies = require('./strategies');
 
 class BacktestEngine {
   constructor() {

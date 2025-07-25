@@ -59,7 +59,7 @@ class MaxDrawdown extends BaseMetric {
         maxDrawdownPercentage: maxDrawdown * 100,
         drawdownStartIndex: maxDrawdownStartIdx,
         drawdownEndIndex: maxDrawdownEndIdx,
-        drawdownDuration: drawdownDuration,
+        drawdownDuration,
         peakValue: equityCurve[maxDrawdownStartIdx] || peak,
         troughValue: equityCurve[maxDrawdownEndIdx] || equityCurve[equityCurve.length - 1],
         dataPoints: equityCurve.length

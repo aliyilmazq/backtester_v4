@@ -1,5 +1,3 @@
-import React from "react";
-import PropTypes from "prop-types";
 import {
   Table,
   TableBody,
@@ -11,6 +9,7 @@ import {
   Typography,
   useMediaQuery
 } from "@mui/material";
+import PropTypes from "prop-types";
 
 export default function AnalysisTableMUI({ data2, analysisResult, selectedAnalysis }) {
   const isMobile = useMediaQuery('(max-width:600px)');

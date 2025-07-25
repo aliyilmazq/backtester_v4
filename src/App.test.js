@@ -1,13 +1,14 @@
 // App.js için test geçici olarak kaldırıldı. Sadece OhlcvTable testleri çalışacak.
 
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import axios from "axios";
+
 import App from "./App";
 
 // axios'u mock'la
 jest.mock("axios", () => ({
   get: jest.fn()
 }));
-import axios from "axios";
 
 describe("App", () => {
   beforeEach(() => {

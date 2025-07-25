@@ -1,15 +1,19 @@
-const express = require('express');
-const cors = require('cors');
+/* eslint-disable no-console */
 const path = require('path');
+
+const cors = require('cors');
+const express = require('express');
+const { OpenAI } = require('openai');
+
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-const apiRoutes = require('./routes/api');
 const errorHandler = require('./middleware/errorHandler');
 const { 
   validateBacktestRequest, 
   validateIndicatorRequest, 
   validateMarketDataRequest 
 } = require('./middleware/validation');
+const apiRoutes = require('./routes/api');
 
 const app = express();
 
@@ -38,7 +42,6 @@ app.get('/api/data/market', validateMarketDataRequest);
 app.use('/api', apiRoutes);
 
 // Legacy AI feedback endpoint (keeping for compatibility)
-const { OpenAI } = require('openai');
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.post('/api/ai-feedback', async (req, res) => {
@@ -61,13 +64,13 @@ app.post('/api/ai-feedback', async (req, res) => {
       temperature: 0.7,
     });
     
-    res.json({ 
+    return res.json({ 
       success: true,
       feedback: completion.choices[0].message.content 
     });
   } catch (err) {
     console.error('AI feedback error:', err);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       success: false,
       error: err.message 
     });

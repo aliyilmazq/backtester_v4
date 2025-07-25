@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, 
   Activity, 
@@ -9,6 +8,7 @@ import {
   Info,
   Check
 } from 'lucide-react';
+
 import { getStrategies } from '../../../services/strategyService';
 
 const StepStrategySelection = ({ data, onUpdate, onNext, onPrevious }) => {
@@ -74,7 +74,7 @@ const StepStrategySelection = ({ data, onUpdate, onNext, onPrevious }) => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto" />
           <p className="mt-4 text-gray-600">Loading strategies...</p>
         </div>
       </div>

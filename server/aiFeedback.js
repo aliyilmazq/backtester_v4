@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
+const axios = require('axios');
+const cors = require('cors');
 const express = require('express');
 const { OpenAI } = require('openai');
-const cors = require('cors');
+
 require('dotenv').config({ path: '../.env' });
-const axios = require('axios');
 
 const app = express();
 app.use(express.json());
@@ -42,9 +44,9 @@ app.post('/api/polygon-ohlcv', async (req, res) => {
       apiKey,
     };
     const response = await axios.get(url, { params });
-    res.json(response.data);
+    return res.json(response.data);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 

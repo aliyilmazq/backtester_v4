@@ -1,12 +1,13 @@
 const puppeteer = require('puppeteer');
 const request = require('supertest');
+
 const app = require('../../server/server');
 
 describe('Frontend-Backend Integration Tests', () => {
   let browser;
-  let page;
-  const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
-  const API_URL = process.env.API_URL || 'http://localhost:5001';
+  // let page;
+  // const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
+  // const API_URL = process.env.API_URL || 'http://localhost:5001';
 
   beforeAll(async () => {
     // Launch browser for frontend tests

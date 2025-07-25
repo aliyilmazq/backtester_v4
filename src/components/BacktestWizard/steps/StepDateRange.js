@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { Calendar, AlertCircle, Info } from 'lucide-react';
 
 const StepDateRange = ({ data, onUpdate, onNext, onPrevious }) => {

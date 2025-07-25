@@ -1,9 +1,9 @@
 const BaseStrategy = require('./baseStrategy');
-const SMAStrategy = require('./smaStrategy');
-const EMAStrategy = require('./emaStrategy');
-const RSIStrategy = require('./rsiStrategy');
-const MACDStrategy = require('./macdStrategy');
 const BollingerBandsStrategy = require('./bbandsStrategy');
+const EMAStrategy = require('./emaStrategy');
+const MACDStrategy = require('./macdStrategy');
+const RSIStrategy = require('./rsiStrategy');
+const SMAStrategy = require('./smaStrategy');
 
 module.exports = {
   BaseStrategy,

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import BacktestWizard from './BacktestWizard';
 import ErrorBoundary from './ErrorBoundary';
 

@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { 
   Settings, 
   DollarSign, 
@@ -9,6 +8,7 @@ import {
   AlertCircle,
   RefreshCw
 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 const StepParameterConfig = ({ data, onUpdate, onNext, onPrevious }) => {
   const [parameters, setParameters] = useState({

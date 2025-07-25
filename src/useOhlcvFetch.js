@@ -1,7 +1,8 @@
 import { useState } from "react";
+
 import { fetchOhlcvPolygon } from "./api/polygon";
 
-const API_KEY = "HL2xahoATlTaojXcGhaU6TiHQ8tTqN4K";
+// const API_KEY = "HL2xahoATlTaojXcGhaU6TiHQ8tTqN4K";
 
 export default function useOhlcvFetch() {
   const [data, setData] = useState([]);

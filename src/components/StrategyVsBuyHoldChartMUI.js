@@ -1,6 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { useTheme, Paper, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 import {
   LineChart,
   Line,

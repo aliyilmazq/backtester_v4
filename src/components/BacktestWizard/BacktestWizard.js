@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import StepSymbolSelection from './steps/StepSymbolSelection';
-import StepDateRange from './steps/StepDateRange';
-import StepStrategySelection from './steps/StepStrategySelection';
-import StepParameterConfig from './steps/StepParameterConfig';
-import StepReview from './steps/StepReview';
-import StepResults from './steps/StepResults';
-import StepIndicator from './StepIndicator';
+
+import { useState } from 'react';
+
 import backtestService from '../../services/backtestService';
 import dataService from '../../services/dataService';
+
+import StepIndicator from './StepIndicator';
+import StepDateRange from './steps/StepDateRange';
+import StepParameterConfig from './steps/StepParameterConfig';
+import StepResults from './steps/StepResults';
+import StepReview from './steps/StepReview';
+import StepStrategySelection from './steps/StepStrategySelection';
+import StepSymbolSelection from './steps/StepSymbolSelection';
 
 const STEPS = [
   { id: 1, name: 'Symbol Selection', component: StepSymbolSelection },
