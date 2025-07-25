@@ -50,15 +50,7 @@ const ModernLayout: React.FC = () => {
       <aside className={`hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-white border-r border-gray-200 transition-all duration-300`}>
         {/* Logo */}
         <div className="flex items-center h-16 px-6 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-              <BarChart3 size={24} className="text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">AlgoTrade</h1>
-              <p className="text-xs text-gray-500">Professional</p>
-            </div>
-          </div>
+          <img src="/logo-citalf.svg" alt="Citalf" className="h-10" />
         </div>
 
         {/* Navigation */}

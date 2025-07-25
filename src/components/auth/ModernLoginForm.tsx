@@ -66,14 +66,9 @@ const ModernLoginForm: React.FC = () => {
       <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 lg:px-20 xl:px-24 bg-white">
         <div className="mx-auto w-full max-w-sm lg:max-w-md">
           {/* Logo */}
-          <div className="flex items-center space-x-3 mb-8">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
-              <BarChart3 size={28} className="text-white" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">AlgoTrade Pro</h1>
-              <p className="text-sm text-gray-500">Institutional Trading Platform</p>
-            </div>
+          <div className="mb-8">
+            <img src="/logo-citalf.svg" alt="Citalf" className="h-12 mb-2" />
+            <p className="text-sm text-gray-500">Professional Trading Platform</p>
           </div>
 
           {/* Welcome Text */}
