@@ -3,7 +3,7 @@ services:
   - type: web
     name: backtester-api
     runtime: node
-    buildCommand: npm install
+    buildCommand: npm install --legacy-peer-deps
     startCommand: node server/server.js
     envVars:
       - key: NODE_ENV
@@ -23,7 +23,7 @@ services:
   - type: web
     name: backtester-frontend
     runtime: static
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --legacy-peer-deps && npm run build
     staticPublishPath: ./build
     envVars:
       - key: REACT_APP_API_URL
