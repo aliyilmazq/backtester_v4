@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -88,9 +89,12 @@ const StepResults = ({ data, results, onNewBacktest, onExport }) => {
           </div>
         </div>
         <div className="text-2xl font-bold text-gray-900">
-          {format === 'currency' ? formatCurrency(value) : 
-           format === 'percent' ? formatPercent(value) : 
-           format === 'number' ? value.toLocaleString() : value}
+          {(() => {
+            if (format === 'currency') return formatCurrency(value);
+            if (format === 'percent') return formatPercent(value);
+            if (format === 'number') return value.toLocaleString();
+            return value;
+          })()}
         </div>
         {trend !== undefined && (
           <div className="flex items-center mt-2">

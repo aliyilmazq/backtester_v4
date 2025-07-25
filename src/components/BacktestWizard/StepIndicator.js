@@ -13,11 +13,11 @@ export default function StepIndicator({ steps, currentStep }) {
               <div
                 className={`
                   w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold
-                  ${isActive 
-                    ? 'bg-blue-600 text-white' 
-                    : isCompleted 
-                      ? 'bg-green-600 text-white' 
-                      : 'bg-gray-300 text-gray-600'}
+                  ${(() => {
+                    if (isActive) return 'bg-blue-600 text-white';
+                    if (isCompleted) return 'bg-green-600 text-white';
+                    return 'bg-gray-300 text-gray-600';
+                  })()}
                 `}
               >
                 {isCompleted ? (

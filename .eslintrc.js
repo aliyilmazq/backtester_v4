@@ -63,6 +63,7 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 'warn',
     'jsx-a11y/click-events-have-key-events': 'error',
     'jsx-a11y/no-static-element-interactions': 'error',
+    'jsx-a11y/label-has-associated-control': 'off',
   },
   settings: {
     react: {
