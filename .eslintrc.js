@@ -14,12 +14,17 @@ module.exports = {
     'plugin:import/warnings',
     'prettier',
   ],
+  parser: '@babel/eslint-parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
     ecmaVersion: 12,
     sourceType: 'module',
+    requireConfigFile: false,
+    babelOptions: {
+      presets: ['@babel/preset-react'],
+    },
   },
   plugins: ['react', 'react-hooks', 'jsx-a11y', 'import'],
   rules: {
@@ -52,7 +57,7 @@ module.exports = {
     'react/prop-types': 'warn',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx'] }],
+    'react/jsx-filename-extension': ['error', { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/jsx-props-no-spreading': 'error',
     'react/no-array-index-key': 'warn',
     'react/no-unused-prop-types': 'error',
@@ -71,7 +76,7 @@ module.exports = {
     },
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.json'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
         moduleDirectory: ['node_modules', 'src/', 'server/'],
       },
     },
@@ -82,6 +87,24 @@ module.exports = {
       env: {
         node: true,
         browser: false,
+      },
+    },
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        ecmaFeatures: {
+          jsx: true,
+        },
+        project: './tsconfig.json',
+      },
+      extends: ['plugin:@typescript-eslint/recommended'],
+      rules: {
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'warn',
+        'react/prop-types': 'off', // TypeScript handles prop types
       },
     },
   ],
