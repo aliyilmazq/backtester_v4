@@ -15,11 +15,45 @@ interface RegisterData {
 
 class AuthService {
   async login(email: string, password: string): Promise<LoginResponse> {
-    const response = await api.post<LoginResponse>('/auth/login', {
-      email,
-      password,
-    });
-    return response;
+    // Mock authentication for demo
+    const mockUsers = [
+      {
+        email: 'pm@example.com',
+        password: 'password123',
+        user: {
+          id: '1',
+          email: 'pm@example.com',
+          name: 'Portfolio Manager',
+          role: 'portfolio_manager' as const,
+          permissions: ['view_dashboard', 'manage_strategies', 'run_backtest', 'view_analytics', 'execute_trades', 'view_reports']
+        }
+      },
+      {
+        email: 'trader@example.com',
+        password: 'password123',
+        user: {
+          id: '2',
+          email: 'trader@example.com',
+          name: 'Trader',
+          role: 'trader' as const,
+          permissions: ['view_dashboard', 'execute_trades', 'view_reports']
+        }
+      }
+    ];
+
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const validUser = mockUsers.find(u => u.email === email && u.password === password);
+    
+    if (validUser) {
+      return {
+        user: validUser.user,
+        token: 'mock-jwt-token-' + Date.now()
+      };
+    }
+
+    throw new Error('Invalid email or password');
   }
 
   async register(data: RegisterData): Promise<LoginResponse> {
@@ -28,14 +62,24 @@ class AuthService {
   }
 
   async logout(): Promise<void> {
-    await api.post('/auth/logout');
+    // Mock logout
+    await new Promise(resolve => setTimeout(resolve, 500));
   }
 
   async validateToken(token: string): Promise<{ user: User }> {
-    const response = await api.get<{ user: User }>('/auth/validate', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response;
+    // Mock token validation
+    if (token && token.startsWith('mock-jwt-token-')) {
+      return {
+        user: {
+          id: '1',
+          email: 'pm@example.com',
+          name: 'Portfolio Manager',
+          role: 'portfolio_manager' as const,
+          permissions: ['view_dashboard', 'manage_strategies', 'run_backtest', 'view_analytics', 'execute_trades', 'view_reports']
+        }
+      };
+    }
+    throw new Error('Invalid token');
   }
 
   async refreshToken(): Promise<{ token: string }> {

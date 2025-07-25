@@ -33,16 +33,19 @@ const ModernLoginForm: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data: FormData) => {
+    console.log('Form submitted with:', data);
     try {
       await dispatch(login(data)).unwrap();
       navigate(from, { replace: true });
     } catch (err) {
+      console.error('Login error:', err);
       // Error is handled by Redux
     }
   };
@@ -88,7 +91,13 @@ const ModernLoginForm: React.FC = () => {
           )}
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form 
+            onSubmit={(e) => {
+              console.log('Form submit event triggered');
+              handleSubmit(onSubmit)(e);
+            }} 
+            className="space-y-6"
+          >
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
                 Email address
@@ -161,7 +170,29 @@ const ModernLoginForm: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="btn btn-primary w-full"
+              className="w-full"
+              style={{
+                padding: '0.75rem 1.5rem',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                color: 'white',
+                backgroundColor: loading ? '#9CA3AF' : '#0066ff',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                transition: 'all 0.3s',
+                opacity: loading ? 0.6 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.backgroundColor = '#0052cc';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.backgroundColor = '#0066ff';
+                }
+              }}
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -184,6 +215,17 @@ const ModernLoginForm: React.FC = () => {
               <p>Portfolio Manager: pm@example.com / password123</p>
               <p>Trader: trader@example.com / password123</p>
             </div>
+            <button 
+              type="button"
+              onClick={() => {
+                console.log('Fill demo credentials clicked');
+                setValue('email', 'pm@example.com');
+                setValue('password', 'password123');
+              }}
+              className="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Fill Demo Credentials
+            </button>
           </div>
 
           {/* Footer Links */}

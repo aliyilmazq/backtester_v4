@@ -3,7 +3,49 @@ import { Strategy, BacktestConfig, BacktestResult } from '../types';
 
 class StrategyService {
   async getAllStrategies(): Promise<Strategy[]> {
-    return await api.get<Strategy[]>('/strategies');
+    // Mock strategies
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return [
+      {
+        id: 1,
+        name: 'Momentum Strategy',
+        status: 'active' as const,
+        aum: 2500000,
+        performance: 24.5,
+        sharpe: 1.82,
+        maxDrawdown: -12.8,
+        risk: 'Moderate' as const,
+        lastRebalance: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+        positions: 15,
+        userId: '1'
+      },
+      {
+        id: 2,
+        name: 'Mean Reversion',
+        status: 'active' as const,
+        aum: 1800000,
+        performance: 18.2,
+        sharpe: 2.15,
+        maxDrawdown: -8.5,
+        risk: 'Conservative' as const,
+        lastRebalance: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+        positions: 8,
+        userId: '1'
+      },
+      {
+        id: 3,
+        name: 'Arbitrage Bot',
+        status: 'paused' as const,
+        aum: 1200000,
+        performance: 15.7,
+        sharpe: 3.21,
+        maxDrawdown: -4.2,
+        risk: 'Aggressive' as const,
+        lastRebalance: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+        positions: 25,
+        userId: '1'
+      }
+    ];
   }
 
   async getStrategy(id: number): Promise<Strategy> {
