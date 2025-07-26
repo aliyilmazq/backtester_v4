@@ -1,5 +1,67 @@
 ---
-description:
-globs:
-alwaysApply: false
+alwaysApply: true
 ---
+// cursor.rules.mdc
+rule "Claude CLI Destekli Mobile-First TypeScript Web App Kuralları" {
+  scope: "always"
+  applies_to: [
+    "apps/frontend/**",
+    "apps/backend/**",
+    "packages/types/**",
+    "packages/ui/**",
+    "claude/**",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+
+  checklist: [
+
+    // 🧱 YAPISAL STANDARTLAR
+    "Frontend ve Backend, ayrı dizinlerde yapılandırılmalı (örn: apps/frontend, apps/backend)",
+    "Tüm Claude promptları claude/prompts/ klasörüne, çıktılar claude/outputs/ klasörüne yazılmalı",
+    "Component, schema, types, prompt ve test dosyaları aynı feature klasöründe gruplanmalı",
+    "Component dosyası en fazla 1 bileşen içermeli, yardımcı component’ler ayrı dosyaya alınmalı",
+    "Dosya adları kebab-case, component adları PascalCase ile yazılmalı",
+    "Exportlar named export olmalı, default export kullanılmamalı",
+    "Tüm Claude çıktıları versiyonlanmalı (örn: login-form-001.tsx)",
+
+    // 🤖 CLAUDE PROMPT / OUTPUT KURALLARI
+    "Claude promptları net, emredici (imperative) ve Türkçe olmalı",
+    "Prompt'larda yalnızca 1 görev istenmeli (tek component, tek hook vs.)",
+    "Claude çıktılarında açıklama, dış link, örnek kullanım olmamalı",
+    "Claude prompt referansı component içine yorum olarak değil, path olarak işlenmeli (örn: // see: claude/prompts/button.prompt.ts)",
+
+    // 🎨 UI GELİŞTİRME STANDARTLARI
+    "Tüm UI bileşenleri tailwind ile yazılmalı, inline stil kullanılmamalı",
+    "Varsayılan görünüm mobil olmalı; responsive yapı sadece sm:, md:, lg: ile gerektiğinde tanımlanmalı",
+    "Her UI bileşeni className desteği vermeli, variant sistemine açık olmalı",
+    "Alt navigasyon gibi yönlendirme component'leri mobil ekranlar için optimize edilmeli (örn: <BottomNav />)",
+    "Görseller, animasyonlar ve yazı tipleri mobilde optimize edilmeli, LCP süresi 1000ms altında kalmalı",
+
+    // 📐 TYPE-SAFE GELİŞTİRME
+    "Tüm kodlar TypeScript ile yazılmalı, tsconfig.json'da 'strict' ve 'noImplicitAny' aktif olmalı",
+    "Ortak tipler packages/types/ içinde tanımlanmalı ve hem frontend hem backend tarafından kullanılmalı",
+    "Tüm form ve API veri yapıları zod ile tanımlanmalı, TS tipleri z.infer ile çıkarılmalı",
+    "Pattern matching için ts-pattern kullanılmalı ve .exhaustive() ile tüm varyantlar kapsanmalı",
+    ".env tipleri env.d.ts içinde ImportMetaEnv ile tanımlanmalı",
+
+    // ⚙️ PERFORMANS & API
+    "API çağrıları react-query ile yapılmalı ve useQuery<T> tipiyle sonuç tiplenmeli",
+    "Backend endpoint’lerinde DTO'lar, frontend tipleriyle uyumlu olacak şekilde tiplenmeli",
+    "Tüm API katmanları Zod ile doğrulanmalı; validation.ts dosyasında centralize edilmeli",
+
+    // 🧪 TEST & DOĞRULUK
+    "Her component için en az bir test dosyası bulunmalı (örn: Button.test.tsx)",
+    "Testlerde tip güvenliği sağlanmalı, mock veriler Zod ile doğrulanmalı",
+    "Testler Vitest + @testing-library/react ile yazılmalı",
+
+    // 🛠️ ARAÇLAR & KOD KALİTESİ
+    "Kod kalite araçları zorunludur: eslint, prettier, husky, commitlint, lint-staged",
+    "Claude çıktıları kullanılmadan önce eslint --fix ile otomatik düzeltme yapılmalı",
+    "Commit mesajları conventional commit formatına uymalı (örn: feat:, fix:, chore:)",
+
+    // 📄 DÖKÜMANTASYON & STANDARTLAŞTIRMA
+    "Tüm bu kurallar README.md ve CONTRIBUTING.md belgelerinde açıkça yer almalı",
+    "Proje başında cursor.rules.mdc bu dosyada tanımlanmalı ve her ekip üyesi tarafından uygulanmalı"
+  ]
+}

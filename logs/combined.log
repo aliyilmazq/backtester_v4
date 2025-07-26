@@ -1,0 +1,23 @@
+2025-07-26T16:37:58: 
+2025-07-26T16:37:58: > citalf-trading-platform@0.1.0 start
+2025-07-26T16:37:58: > react-scripts start
+2025-07-26T16:37:58: 
+2025-07-26T16:38:00: (node:30532) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+2025-07-26T16:38:00: (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-07-26T16:38:00: (node:30532) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+2025-07-26T16:38:00: Starting the development server...
+2025-07-26T16:38:00: 
+2025-07-26T16:38:01: Compiled successfully!
+2025-07-26T16:38:01: 
+2025-07-26T16:38:01: You can now view citalf-trading-platform in the browser.
+2025-07-26T16:38:01: 
+2025-07-26T16:38:01:   Local:            http://localhost:3000
+2025-07-26T16:38:01:   On Your Network:  http://192.168.1.19:3000
+2025-07-26T16:38:01: 
+2025-07-26T16:38:01: Note that the development build is not optimized.
+2025-07-26T16:38:01: To create a production build, use npm run build.
+2025-07-26T16:38:01: 
+2025-07-26T16:38:01: webpack compiled successfully
+2025-07-26T16:38:01: Files successfully emitted, waiting for typecheck results...
+2025-07-26T16:38:01: Issues checking in progress...
+2025-07-26T16:38:02: No issues found.
