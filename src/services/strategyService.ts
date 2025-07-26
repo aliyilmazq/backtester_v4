@@ -80,7 +80,7 @@ class StrategyService {
     return await api.get(`/strategies/${id}/positions`);
   }
 
-  async getStrategyTrades(id: number, limit: number = 50): Promise<any[]> {
+  async getStrategyTrades(id: number, limit = 50): Promise<any[]> {
     return await api.get(`/strategies/${id}/trades?limit=${limit}`);
   }
 

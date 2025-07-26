@@ -49,7 +49,7 @@ class AuthService {
     if (validUser) {
       return {
         user: validUser.user,
-        token: 'mock-jwt-token-' + Date.now()
+        token: `mock-jwt-token-${Date.now()}`
       };
     }
 

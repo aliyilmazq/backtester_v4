@@ -18,11 +18,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const location = useLocation();
   const { isAuthenticated, loading, user } = useSelector((state: RootState) => state.auth);
 
+  // Check localStorage as fallback
+  const token = localStorage.getItem('token');
+  
   if (loading) {
     return <LoadingSpinner fullScreen text="Verifying authentication..." />;
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !token) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

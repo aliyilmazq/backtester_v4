@@ -7,6 +7,9 @@ import { useWebSocket } from './hooks/useWebSocket';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import ModernLoginForm from './components/auth/ModernLoginForm';
+import SimpleLoginForm from './components/auth/SimpleLoginForm';
+import SupabaseLoginForm from './components/auth/SupabaseLoginForm';
+import SignupForm from './components/auth/SignupForm';
 import ModernLayout from './components/layout/ModernLayout';
 import ModernDashboard from './components/dashboard/ModernDashboard';
 import Strategies from './components/strategies/Strategies';
@@ -18,14 +21,16 @@ import Unauthorized from './components/common/Unauthorized';
 
 // Create a component that uses hooks
 const AppContent: React.FC = () => {
-  // Initialize hooks
-  useAuth();
-  useWebSocket();
+  // Initialize hooks - temporarily disabled
+  // useAuth();
+  // useWebSocket();
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<ModernLoginForm />} />
+        <Route path="/login" element={<SupabaseLoginForm />} />
+        <Route path="/signup" element={<SignupForm />} />
+        <Route path="/simple-login" element={<SimpleLoginForm />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         
         <Route
