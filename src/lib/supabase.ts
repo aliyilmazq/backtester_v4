@@ -2,11 +2,14 @@ import { createClient } from '@supabase/supabase-js';
 
 // Supabase configuration
 // You need to get these values from your Supabase project settings
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env['REACT_APP_SUPABASE_URL'] || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env['REACT_APP_SUPABASE_ANON_KEY'] || 'placeholder-key';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials not found in environment variables');
+// Check if we have real credentials
+export const hasSupabaseCredentials = supabaseUrl !== 'https://placeholder.supabase.co' && supabaseAnonKey !== 'placeholder-key';
+
+if (!hasSupabaseCredentials) {
+  console.warn('Supabase credentials not found in environment variables. Authentication features will not work.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -24,6 +27,9 @@ export interface Profile {
 
 // Auth helpers
 export const signUp = async (email: string, password: string, name: string) => {
+  if (!hasSupabaseCredentials) {
+    throw new Error('Supabase is not configured. Please set up environment variables.');
+  }
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -56,6 +62,9 @@ export const signUp = async (email: string, password: string, name: string) => {
 };
 
 export const signIn = async (email: string, password: string) => {
+  if (!hasSupabaseCredentials) {
+    throw new Error('Supabase is not configured. Please set up environment variables.');
+  }
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -66,11 +75,18 @@ export const signIn = async (email: string, password: string) => {
 };
 
 export const signOut = async () => {
+  if (!hasSupabaseCredentials) {
+    throw new Error('Supabase is not configured. Please set up environment variables.');
+  }
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 };
 
 export const getProfile = async (userId: string): Promise<Profile | null> => {
+  if (!hasSupabaseCredentials) {
+    console.warn('Supabase is not configured.');
+    return null;
+  }
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
