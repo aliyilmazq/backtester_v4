@@ -40,7 +40,8 @@ const SignupForm: React.FC = () => {
     try {
       await signUp(data.email, data.password, data.name);
       // Show success message
-      alert('Account created successfully! Please check your email to verify your account.');
+      // TODO: Replace with proper notification system
+      window.alert('Account created successfully! Please check your email to verify your account.');
       navigate('/login');
     } catch (err: any) {
       setError(err.message || 'Failed to create account');
